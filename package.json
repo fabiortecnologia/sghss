@@ -1,0 +1,29 @@
+{
+    "name": "sghss-backend",
+    "version": "1.0.0",
+    "main": "src/server.js",
+    "type": "module",
+    "scripts": {
+        "start": "node src/server.js",
+        "dev": "nodemon src/server.js",
+        "migrate": "knex migrate:latest",
+        "rollback": "knex migrate:rollback",
+        "seed": "knex seed:run",
+        "docker:up": "docker-compose -f docker-compose.dev.yml up -d",
+        "docker:down": "docker-compose -f docker-compose.dev.yml down",
+        "docker:restart": "npm run docker:down && npm run docker:up",
+        "docker:dev": "npm run docker:up && npm run dev"
+    },
+    "dependencies": {
+        "bcrypt": "^5.1.0",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "jsonwebtoken": "^9.0.0",
+        "knex": "^2.5.1",
+        "pg": "^8.10.0",
+        "swagger-ui-express": "^5.0.1"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.2"
+    }
+}
