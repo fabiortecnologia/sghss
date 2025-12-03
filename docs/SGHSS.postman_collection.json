@@ -1,0 +1,1439 @@
+{
+	"info": {
+		"_postman_id": "7a88da6f-d254-4fab-87d4-3d828ebdfc67",
+		"name": "SGHSS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8367961"
+	},
+	"item": [
+		{
+			"name": "LOGINS",
+			"item": [
+				{
+					"name": "TESTE APLICAÇÃO STATUS",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "PEGAR TOKEN",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"admin@vidaplus.com.br\",\r\n  \"senha\": \"admin1234!\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REFRESH TOKEN",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzY0Nzg4MjMxLCJleHAiOjE3NjczODAyMzF9.yQhdR3rGnW87-UHQau0yAOQIDSYMUXbaO6IU1Iskiko\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/refreshToken",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"refreshToken"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PROFISSIONAIS",
+			"item": [
+				{
+					"name": "Criar profissional",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0Mjk3NTU0LCJleHAiOjE3NjQzMDExNTR9.a2ni-I6R3QpRpGjjtdhqJELBpWF7DmcRqHgYEWOKH8o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Dr. Shaun Murphy\",\r\n  \"crm\": \"CRM-55599\",\r\n  \"especialidade\": \"Neuro\",\r\n  \"telefone\": \"11999999988\",\r\n  \"email\": \"shaun.murphy@vidaplus.com\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/profissionais",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"profissionais"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar profissionais",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0Mjk3NTU0LCJleHAiOjE3NjQzMDExNTR9.a2ni-I6R3QpRpGjjtdhqJELBpWF7DmcRqHgYEWOKH8o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/profissionais",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"profissionais"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar profissionais por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0Mjk3NTU0LCJleHAiOjE3NjQzMDExNTR9.a2ni-I6R3QpRpGjjtdhqJELBpWF7DmcRqHgYEWOKH8o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/profissionais/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"profissionais",
+								"1"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar profissional por id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0Mjk3NTU0LCJleHAiOjE3NjQzMDExNTR9.a2ni-I6R3QpRpGjjtdhqJELBpWF7DmcRqHgYEWOKH8o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"telefone\": \"11999999995\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/profissionais/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"profissionais",
+								"3"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleter profissionais por ID ( Soft delete)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0Mjk3NTU0LCJleHAiOjE3NjQzMDExNTR9.a2ni-I6R3QpRpGjjtdhqJELBpWF7DmcRqHgYEWOKH8o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/profissionais/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"profissionais",
+								"3"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reativar profissionais por ID ",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0MzAyODE3LCJleHAiOjE3NjQzMDY0MTd9.VUdlVx4OjJpSu-K3fmgvAkDXBpMrM4Qi3DaLVBHwCfg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/profissionais/3/reativar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"profissionais",
+								"3",
+								"reativar"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ADMIN",
+			"item": [
+				{
+					"name": "Criar Acesso para profissional - Precisa de usuario admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0Mjk3NTU0LCJleHAiOjE3NjQzMDExNTR9.a2ni-I6R3QpRpGjjtdhqJELBpWF7DmcRqHgYEWOKH8o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"senha\": \"senhaDaAna123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/profissionais/1/criar-usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"profissionais",
+								"1",
+								"criar-usuario"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar profissional  + acesso ao sistema - Precisa de usuario admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0Mjk3NTU0LCJleHAiOjE3NjQzMDExNTR9.a2ni-I6R3QpRpGjjtdhqJELBpWF7DmcRqHgYEWOKH8o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Dr. Adao Silva\",\r\n  \"email\": \"adao.silva@vidaplus.com\",\r\n  \"senha\": \"senhaSegura123\",\r\n  \"crm\": \"CRM-95325\",\r\n  \"especialidade\": \"Clinico Geral\",\r\n  \"telefone\": \"11999999991\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/profissionais/com-usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"profissionais",
+								"com-usuario"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Anonimizar paciente como ADMIN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0Mjk3NTU0LCJleHAiOjE3NjQzMDExNTR9.a2ni-I6R3QpRpGjjtdhqJELBpWF7DmcRqHgYEWOKH8o",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/pacientes/1/anonimizar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pacientes",
+								"1",
+								"anonimizar"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BUSCAR LOGS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NjQ4MzM0LCJleHAiOjE3NjQ2NTE5MzR9.xPkzS65Q6lFTkVptOu53tZygYBcNnmM6zGS8J0tGNvs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer SEU_TOKEN_AQUI"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/auditLogs?user_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auditLogs"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AGENDAMENTOS",
+			"item": [
+				{
+					"name": "Criar Agendamento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NDc5NjgwLCJleHAiOjE3NjQ0ODMyODB9.aaLgARpEcGeB87eYMdand6tyn7q1BTmr4lmo60qGLvc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"paciente_id\": 9,\r\n  \"profissional_id\": 4,\r\n  \"data_horario\": \"10/12/2025 10:00:00\",\r\n  \"duracao_minutos\": 30,\r\n  \"tipo\": \"Consulta Inicial\",\r\n  \"observacoes\": \"Dores na nuca\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/agendamentos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"agendamentos"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Agendamentos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NDc1MTY3LCJleHAiOjE3NjQ0Nzg3Njd9.rqKaLtngUHJYitXRSLevXLqXSEocOEalb2879I073jU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/agendamentos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"agendamentos"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Agendamentos por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NDc1MTY3LCJleHAiOjE3NjQ0Nzg3Njd9.rqKaLtngUHJYitXRSLevXLqXSEocOEalb2879I073jU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/agendamentos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"agendamentos",
+								"1"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancelar Agendamento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NDc1MTY3LCJleHAiOjE3NjQ0Nzg3Njd9.rqKaLtngUHJYitXRSLevXLqXSEocOEalb2879I073jU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/agendamentos/1/cancelar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"agendamentos",
+								"1",
+								"cancelar"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reagendar Consulta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NTY3MDU0LCJleHAiOjE3NjQ1NzA2NTR9._TbdrJW8zp8-0qlyg08yrqaYuIKpISsZB-9A0caXF58",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"data_horario\": \"15/12/2025 09:00:00\",\r\n  \"tipo\": \"CONSULTA\",\r\n  \"duracao_minutos\": 40,\r\n  \"observacoes\": \"Reagendado a pedido do paciente\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/agendamentos/1/reagendar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"agendamentos",
+								"1",
+								"reagendar"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancelar Consulta",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NTY3MDU0LCJleHAiOjE3NjQ1NzA2NTR9._TbdrJW8zp8-0qlyg08yrqaYuIKpISsZB-9A0caXF58",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/agendamentos/2/cancelar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"agendamentos",
+								"2",
+								"cancelar"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PACIENTES",
+			"item": [
+				{
+					"name": "Criar Pacientes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NDc1MTY3LCJleHAiOjE3NjQ0Nzg3Njd9.rqKaLtngUHJYitXRSLevXLqXSEocOEalb2879I073jU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Maria Oliveira Santos\",\r\n  \"cpf\": \"12345678900\",\r\n  \"data_nascimento\": \"1989-07-12\",\r\n  \"telefone\": \"11988776655\",\r\n  \"email\": \"maria.santos@exemplo.com\",\r\n  \"endereco\": {\r\n    \"rua\": \"Rua das Flores\",\r\n    \"numero\": \"123\",\r\n    \"cidade\": \"São Paulo\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"04545-123\"\r\n  },\r\n  \"consentimento_lgpd\": true\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/pacientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pacientes"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Pacientes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NDc1MTY3LCJleHAiOjE3NjQ0Nzg3Njd9.rqKaLtngUHJYitXRSLevXLqXSEocOEalb2879I073jU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/pacientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pacientes"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Pacientes por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NDc1MTY3LCJleHAiOjE3NjQ0Nzg3Njd9.rqKaLtngUHJYitXRSLevXLqXSEocOEalb2879I073jU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/pacientes/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pacientes",
+								"1"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Paciente por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NDc1MTY3LCJleHAiOjE3NjQ0Nzg3Njd9.rqKaLtngUHJYitXRSLevXLqXSEocOEalb2879I073jU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Maria O. Santos\",\r\n  \"telefone\": \"11977776666\",\r\n  \"endereco\": {\r\n    \"rua\": \"Av. Brasil\",\r\n    \"numero\": \"2000\",\r\n    \"cidade\": \"São Paulo\",\r\n    \"estado\": \"SP\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/pacientes/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pacientes",
+								"1"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Paciente por ID (Soft Delete)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NDc1MTY3LCJleHAiOjE3NjQ0Nzg3Njd9.rqKaLtngUHJYitXRSLevXLqXSEocOEalb2879I073jU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/pacientes/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pacientes",
+								"1"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Pacientes + acesso sistema",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NDc4ODczLCJleHAiOjE3NjQ0ODI0NzN9.NqR9yapW9K3_0SmIwIKIpblwbaTX9XHHol6ZsPj0KxQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Joao das Dores\",\r\n  \"cpf\": \"12345678901\",\r\n  \"data_nascimento\": \"1972-03-03\",\r\n  \"telefone\": \"11988776655\",\r\n  \"email\": \"joao.dores@exemplo.com\",\r\n  \"endereco\": {\r\n    \"rua\": \"Rua dos Remedios\",\r\n    \"numero\": \"750\",\r\n    \"cidade\": \"Curitiba\",\r\n    \"estado\": \"PR\",\r\n    \"cep\": \"81270-000\"\r\n  },\r\n  \"senha\":\"senha123\",\r\n  \"consentimento_lgpd\": true\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/pacientes/com-usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pacientes",
+								"com-usuario"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Acesso Paciente/sistema - Precisa estar cadastrado no banco",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NDc4ODczLCJleHAiOjE3NjQ0ODI0NzN9.NqR9yapW9K3_0SmIwIKIpblwbaTX9XHHol6ZsPj0KxQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"senha\": \"senhaJoao123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/pacientes/1/criar-usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"pacientes",
+								"1",
+								"criar-usuario"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PRONTUARIOS",
+			"item": [
+				{
+					"name": "Criar Prontuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NjAzOTk4LCJleHAiOjE3NjQ2MDc1OTh9.UAWEQmHjIJBMteWS0iQTjYkUlOmHVJWnYqEB4umqy9s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"agendamento_id\": 1,\r\n  \"tipo_registro\": \"CONSULTA\",\r\n  \"notas\": \"Paciente relata dor torácica há 3 dias, sem irradiação.\",\r\n  \"prescricoes\": {\r\n    \"medicamentos\": [\r\n      { \"nome\": \"Dipirona 500mg\", \"dose\": \"1 comprimido\", \"frequencia\": \"8/8h por 3 dias\" }\r\n    ]\r\n  },\r\n  \"anexos\": {\r\n    \"exames\": [\r\n      { \"tipo\": \"ECG\", \"url\": \"https://exemplo.com/ecg/123.pdf\" }\r\n    ]\r\n  },\r\n  \"visibilidade\": \"COMPARTILHADO\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/prontuarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"prontuarios"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar prontuarios - como admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NjAzOTk4LCJleHAiOjE3NjQ2MDc1OTh9.UAWEQmHjIJBMteWS0iQTjYkUlOmHVJWnYqEB4umqy9s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/prontuarios/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"prontuarios",
+								"1"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar prontuarios - como paciente - admin tbm ve",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NjAzOTk4LCJleHAiOjE3NjQ2MDc1OTh9.UAWEQmHjIJBMteWS0iQTjYkUlOmHVJWnYqEB4umqy9s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/prontuarios/paciente/9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"prontuarios",
+								"paciente",
+								"9"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar prontuario - Profissional ou  admin ",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NjI2NTk0LCJleHAiOjE3NjQ2MzAxOTR9.LB0OWXXIxkXzz2nUf5Ali1oxwqj0XEUUB74l6tyRRJs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"notas\": \"Evolução do quadro: melhora significativa.\",\r\n  \"prescricoes\": { \"medicamento\": \"Ibuprofeno 400mg\", \"frequencia\": \"8/8h\" },\r\n  \"visibilidade\": \"COMPARTILHADO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/prontuarios/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"prontuarios",
+								"1"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Emitir Receita - Profissional ou  admin ",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB2aWRhcGx1cy5jb20uYnIiLCJwYXBlbCI6IkFETUlOIiwiaWF0IjoxNzY0NjQzMTAyLCJleHAiOjE3NjQ2NDY3MDJ9.fg5ICUl2jLwWYfWonq60fp9kU9cBH6zr5Ts58Ftjj6A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"notas\": \"Evolução do quadro: melhora significativa.\",\r\n  \"prescricoes\": { \"medicamento\": \"Ibuprofeno 400mg\", \"frequencia\": \"8/8h\" },\r\n  \"visibilidade\": \"COMPARTILHADO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/prontuarios/1/receita",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"prontuarios",
+								"1",
+								"receita"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -164,11 +164,10 @@
                     <th>Nome</th>
                     <th>Telefone</th>
                     <th>E-mail</th>
-                    <th>Ações</th>
                   </tr>
                 </thead>
                 <tbody id="pacientesTableBody">
-                  <tr><td colspan="5" class="text-muted">Clique em "Atualizar lista".</td></tr>
+                  <tr><td colspan="4" class="text-muted">Clique em "Atualizar lista".</td></tr>
                 </tbody>
               </table>
             </div>
@@ -229,11 +228,10 @@
                     <th>CRM</th>
                     <th>Especialidade</th>
                     <th>E-mail</th>
-                    <th>Ações</th>
                   </tr>
                 </thead>
                 <tbody id="profissionaisTableBody">
-                  <tr><td colspan="6" class="text-muted">Clique em "Atualizar lista".</td></tr>
+                  <tr><td colspan="5" class="text-muted">Clique em "Atualizar lista".</td></tr>
                 </tbody>
               </table>
             </div>
@@ -306,11 +304,10 @@
                     <th>Profissional</th>
                     <th>Data/Hora</th>
                     <th>Status</th>
-                    <th>Ações</th>
                   </tr>
                 </thead>
                 <tbody id="agendamentosTableBody">
-                  <tr><td colspan="6" class="text-muted">Clique em "Atualizar lista".</td></tr>
+                  <tr><td colspan="5" class="text-muted">Clique em "Atualizar lista".</td></tr>
                 </tbody>
               </table>
             </div>
@@ -356,10 +353,14 @@
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
   <script>
     const API_BASE_URL = 'http://localhost:3000';
 
     let authToken = null;
+    let refreshToken = null;
     let currentUser = null;
 
     const loginContainer = document.getElementById('loginContainer');
@@ -400,24 +401,37 @@
       return data.toLocaleString('pt-BR', { timeZone: 'UTC' });
     }
 
-    function setToken(token, usuario) {
-      authToken = token;
-      currentUser = usuario;
-      if (token) {
+    // ------------------ AUTH / STORAGE ------------------
+
+    function setSession(token, refresh, usuario) {
+      authToken = token || null;
+      refreshToken = refresh || null;
+      currentUser = usuario || null;
+
+      if (token && usuario) {
         localStorage.setItem('sghss_token', token);
         localStorage.setItem('sghss_user', JSON.stringify(usuario));
       } else {
         localStorage.removeItem('sghss_token');
         localStorage.removeItem('sghss_user');
       }
+
+      if (refresh) {
+        localStorage.setItem('sghss_refresh_token', refresh);
+      } else {
+        localStorage.removeItem('sghss_refresh_token');
+      }
     }
 
-    function loadTokenFromStorage() {
+    function loadSessionFromStorage() {
       const token = localStorage.getItem('sghss_token');
-      const user = localStorage.getItem('sghss_user');
-      if (token && user) {
+      const userStr = localStorage.getItem('sghss_user');
+      const refresh = localStorage.getItem('sghss_refresh_token');
+
+      if (token && userStr) {
         authToken = token;
-        currentUser = JSON.parse(user);
+        refreshToken = refresh || null;
+        currentUser = JSON.parse(userStr);
         showApp();
       }
     }
@@ -441,10 +455,11 @@
     function showLogin() {
       appContainer.style.display = 'none';
       loginContainer.style.display = 'block';
-      setToken(null, null);
+      setSession(null, null, null);
     }
 
-    // Navegação básica
+    // ------------------ NAVEGAÇÃO ------------------
+
     navLinks.forEach((link) => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -458,7 +473,8 @@
       });
     });
 
-    // Login
+    // ------------------ LOGIN ------------------
+
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       loginError.classList.add('d-none');
@@ -483,7 +499,8 @@
           throw new Error('Resposta de login inválida.');
         }
 
-        setToken(data.token, data.usuario);
+        // agora também pegamos o refresh_token
+        setSession(data.token, data.refresh_token || null, data.usuario);
         showApp();
       } catch (err) {
         loginError.textContent = err.message;
@@ -496,82 +513,102 @@
       showLogin();
     });
 
-    // Helpers para requisições autenticadas
-    async function apiGet(path) {
-      const res = await fetch(API_BASE_URL + path, {
+    // ------------------ REQUEST COM REFRESH AUTOMÁTICO ------------------
+
+    async function requestWithAuth(method, path, bodyObj = null, retry = true) {
+      const options = {
+        method,
         headers: {
-          'Authorization': 'Bearer ' + authToken
+          'Authorization': authToken ? 'Bearer ' + authToken : ''
         }
-      });
-      if (!res.ok) {
-        throw new Error('Erro ao carregar dados: ' + res.status);
+      };
+
+      if (bodyObj !== null) {
+        options.headers['Content-Type'] = 'application/json';
+        options.body = JSON.stringify(bodyObj);
       }
-      return res.json();
+
+      const res = await fetch(API_BASE_URL + path, options);
+
+      // se der 401 e tivermos refresh_token, tentar renovar
+      if (res.status === 401 && retry && refreshToken) {
+        const renovado = await tentarRenovarToken();
+        if (renovado) {
+          // tenta novamente uma única vez
+          return requestWithAuth(method, path, bodyObj, false);
+        } else {
+          alert('Sua sessão expirou. Faça login novamente.');
+          showLogin();
+          throw new Error('Sessão expirada');
+        }
+      }
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error('Erro na requisição: ' + res.status + ' - ' + text);
+      }
+
+      // pode haver respostas sem JSON
+      const contentType = res.headers.get('Content-Type') || '';
+      if (contentType.includes('application/json')) {
+        return res.json();
+      }
+      return res.text();
+    }
+
+    async function tentarRenovarToken() {
+      try {
+        if (!refreshToken) return false;
+
+        const res = await fetch(API_BASE_URL + '/auth/refresh', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ refresh_token: refreshToken })
+        });
+
+        if (!res.ok) {
+          return false;
+        }
+
+        const data = await res.json();
+        if (!data.token) {
+          return false;
+        }
+
+        // mantém o usuário e refreshToken atual, só troca o access token
+        setSession(data.token, refreshToken, currentUser);
+        return true;
+      } catch (err) {
+        console.error('Erro ao renovar token:', err);
+        return false;
+      }
+    }
+
+    // Wrappers específicos
+    async function apiGet(path) {
+      return requestWithAuth('GET', path);
     }
 
     async function apiPost(path, bodyObj) {
-      const res = await fetch(API_BASE_URL + path, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + authToken
-        },
-        body: JSON.stringify(bodyObj)
-      });
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error('Erro ao salvar: ' + res.status + ' - ' + text);
-      }
-      return res.json().catch(() => ({}));
+      return requestWithAuth('POST', path, bodyObj);
     }
 
     async function apiPut(path, bodyObj) {
-      const res = await fetch(API_BASE_URL + path, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + authToken
-        },
-        body: JSON.stringify(bodyObj)
-      });
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error('Erro ao atualizar: ' + res.status + ' - ' + text);
-      }
-      return res.json().catch(() => ({}));
+      return requestWithAuth('PUT', path, bodyObj);
     }
 
     async function apiPatch(path, bodyObj) {
-      const res = await fetch(API_BASE_URL + path, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + authToken
-        },
-        body: bodyObj ? JSON.stringify(bodyObj) : null
-      });
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error('Erro ao atualizar: ' + res.status + ' - ' + text);
-      }
-      return res.json().catch(() => ({}));
+      return requestWithAuth('PATCH', path, bodyObj);
     }
 
     async function apiDelete(path) {
-      const res = await fetch(API_BASE_URL + path, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': 'Bearer ' + authToken
-        }
-      });
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error('Erro ao desativar: ' + res.status + ' - ' + text);
-      }
-      return res.text().catch(() => ({}));
+      return requestWithAuth('DELETE', path);
     }
 
-    // Pacientes - listar
+    // ------------------ PACIENTES ------------------
+
     async function carregarPacientes() {
       try {
         const pacientes = await apiGet('/pacientes');
@@ -602,7 +639,6 @@
 
     btnCarregarPacientes.addEventListener('click', carregarPacientes);
 
-    // Pacientes - criar
     formPaciente.addEventListener('submit', async (e) => {
       e.preventDefault();
       const nome = document.getElementById('pacienteNome').value.trim();
@@ -633,7 +669,6 @@
       }
     });
 
-    // Pacientes - ações (editar / desativar)
     pacientesTableBody.addEventListener('click', async (e) => {
       const btn = e.target.closest('button');
       if (!btn) return;
@@ -671,7 +706,8 @@
       }
     });
 
-    // Profissionais - listar
+    // ------------------ PROFISSIONAIS ------------------
+
     async function carregarProfissionais() {
       try {
         const profissionais = await apiGet('/profissionais');
@@ -703,7 +739,6 @@
 
     btnCarregarProfissionais.addEventListener('click', carregarProfissionais);
 
-    // Profissionais - criar
     formProfissional.addEventListener('submit', async (e) => {
       e.preventDefault();
       const nome = document.getElementById('profNome').value.trim();
@@ -730,7 +765,6 @@
       }
     });
 
-    // Profissionais - ações (editar / desativar)
     profissionaisTableBody.addEventListener('click', async (e) => {
       const btn = e.target.closest('button');
       if (!btn) return;
@@ -772,7 +806,8 @@
       }
     });
 
-    // Agendamentos - listar
+    // ------------------ AGENDAMENTOS ------------------
+
     async function carregarAgendamentos() {
       try {
         const ags = await apiGet('/agendamentos');
@@ -804,7 +839,6 @@
 
     btnCarregarAgendamentos.addEventListener('click', carregarAgendamentos);
 
-    // Agendamentos - criar
     formAgendamento.addEventListener('submit', async (e) => {
       e.preventDefault();
       const paciente_id = Number(document.getElementById('agPacienteId').value);
@@ -834,7 +868,6 @@
       }
     });
 
-    // Agendamentos - ações (editar / cancelar)
     agendamentosTableBody.addEventListener('click', async (e) => {
       const btn = e.target.closest('button');
       if (!btn) return;
@@ -881,7 +914,8 @@
       }
     });
 
-    // Logs - listar (somente ADMIN)
+    // ------------------ LOGS (AUDITORIA) ------------------
+
     async function carregarLogs() {
       try {
         const resposta = await apiGet('/auditLogs?pagina=1&limite=20');
@@ -911,8 +945,10 @@
 
     btnCarregarLogs.addEventListener('click', carregarLogs);
 
-    // Carregar token se já existir
-    loadTokenFromStorage();
+    // ------------------ INICIALIZAÇÃO ------------------
+
+    loadSessionFromStorage();
   </script>
+
 </body>
 </html>
