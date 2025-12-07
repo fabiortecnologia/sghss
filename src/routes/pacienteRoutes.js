@@ -14,13 +14,13 @@ import { requireAdmin, requireAdminOrReceptionist } from '../middlewares/roleMid
 
 const router = express.Router();
 
-// todas as rotas de pacientes exigem autenticação
+//somente ADMIN ou RECEPCIONISTA podem criar/atualizar/remover pacientes
 router.use(authMiddleware);
 
-router.get('/', listar);
-router.get('/:id', obterPorId);
+router.get('/', requireAdminOrReceptionist, listar);
+router.get('/:id', requireAdminOrReceptionist, obterPorId);
 
-// somente ADMIN ou RECEPCIONISTA podem criar/atualizar/remover pacientes
+
 router.post('/com-usuario', requireAdminOrReceptionist, criarComUsuario);
 router.post('/:id/criar-usuario', requireAdminOrReceptionist, criarUsuarioParaPaciente);
 

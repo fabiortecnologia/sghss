@@ -169,9 +169,21 @@ export const criar = async (req, res) => {
 // PATCH /agendamentos/:id/cancelar
 export const cancelar = async (req, res) => {
   const { id } = req.params;
+  const usuarioLogado = req.user?.id || null;
+  const motivo_cancelamento = req.body?.motivo || null;
 
   try {
-    const [agendamento] = await db('agendamentos')
+    // 1) Buscar agendamento antes da alteração
+    const agendamentoExistente = await db('agendamentos')
+      .where({ id })
+      .first();
+
+    if (!agendamentoExistente) {
+      return res.status(404).json({ error: 'Agendamento não encontrado.' });
+    }
+
+    // 2) Realizar cancelamento
+    const [agendamentoAtualizado] = await db('agendamentos')
       .where({ id })
       .update(
         {
@@ -181,30 +193,27 @@ export const cancelar = async (req, res) => {
         '*'
       );
 
-    if (!agendamento) {
-      return res.status(404).json({ error: 'Agendamento não encontrado.' });
-    }
-
-     // log de auditoria do cancelamento RF07
-      await trx('audit_logs').insert({
-        user_id: userId || null,
-        acao: 'CANCELAMENTO_AGENDAMENTO',
-        entidade: 'agendamentos',
-        entidade_id: id,
-        detalhes: JSON.stringify({
-          status_anterior: agendamento.status,
-          status_novo: novo.status,
-          data_horario: agendamento.data_horario,
-          motivo_cancelamento: motivo_cancelamento || null
-        }),
-        ip: req.ip || null,
-        criado_em: trx.fn.now()
-      });
+    // 3) Registrar auditoria (RF07)
+    await db('audit_logs').insert({
+      user_id: usuarioLogado,
+      acao: 'CANCELAMENTO_AGENDAMENTO',
+      entidade: 'agendamentos',
+      entidade_id: id,
+      detalhes: JSON.stringify({
+        status_anterior: agendamentoExistente.status,
+        status_novo: STATUS_CANCELADO,
+        data_horario: agendamentoExistente.data_horario,
+        motivo_cancelamento: motivo_cancelamento
+      }),
+      ip: req.ip || null,
+      criado_em: db.fn.now()
+    });
 
     return res.json({
       message: 'Agendamento cancelado com sucesso.',
-      agendamento
+      agendamento: agendamentoAtualizado
     });
+
   } catch (err) {
     console.error('Erro ao cancelar agendamento:', err);
     return res.status(500).json({
@@ -213,6 +222,7 @@ export const cancelar = async (req, res) => {
     });
   }
 };
+
 
 // PATCH /agendamentos/:id/reagendar
 export const reagendar = async (req, res) => {

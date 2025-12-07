@@ -11,16 +11,16 @@ import {
   reativar
 } from '../controllers/profissionalController.js';
 import { authMiddleware } from '../middlewares/authMiddleware.js';
-import { requireAdmin } from '../middlewares/roleMiddleware.js';
+import { requireAdmin, requireNotPatient } from '../middlewares/roleMiddleware.js';
 
 const router = express.Router();
 
 // todas as rotas exigem usuário autenticado
 router.use(authMiddleware);
 
-// qualquer usuário logado pode listar
-router.get('/', listar);
-router.get('/:id', obterPorId);
+// qualquer usuário logado pode listar menos pacientes
+router.get('/', requireNotPatient, listar);
+router.get('/:id', requireNotPatient, obterPorId);
 
 // somente ADMIN pode criar/atualizar/remover profissionais
 router.post('/', requireAdmin, criar);

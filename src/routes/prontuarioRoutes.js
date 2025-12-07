@@ -8,15 +8,16 @@ import {
 } from '../controllers/prontuarioController.js';
 
 import { authMiddleware } from '../middlewares/authMiddleware.js';
+import { requireNotPatient } from '../middlewares/roleMiddleware.js';
 
 const router = express.Router();
 
 router.use(authMiddleware);
 
-router.post('/', criar);
-router.get('/:id', obterPorId);
+router.post('/', requireNotPatient, criar);
+router.get('/:id', requireNotPatient, obterPorId);
 router.get('/paciente/:pacienteId', listarPorPaciente);
-router.patch('/:id', atualizar);
-router.get('/:id/receita', emitirReceita);
+router.patch('/:id', requireNotPatient, atualizar);
+router.get('/:id/receita', requireNotPatient, emitirReceita);
 
 export default router;
